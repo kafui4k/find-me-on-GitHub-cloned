@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {Fragment} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import './App.css';
 import NavBar from './components/layouts/NavBar';
@@ -9,42 +9,39 @@ import {About} from './components/pages/About';
 import User from './components/users/User';
 
 import GitHubState from './context/github/GitHubState';
+import AlertState from './context/alert/AlertState';
 
 const App = () => {
-    const [alert, setALert] = useState(null);
-
-    const setAlert = (message, type) => {
-        setALert({message, type});
-
-        setTimeout(() => {
-            setALert(null);
-        }, 2000);
-    };
-
     return (
         <GitHubState>
-            <Router>
-                <div className='App'>
-                    <NavBar />
-                    <div className='container'>
-                        <Alert alert={alert} />
-                        <Switch>
-                            <Route
-                                exact
-                                path='/'
-                                render={(props) => (
-                                    <Fragment>
-                                        <Search setAlert={setAlert} />
-                                        <Users />
-                                    </Fragment>
-                                )}
-                            />
-                            <Route exact path='/about' component={About} />
-                            <Route exact path='/user/:login' component={User} />
-                        </Switch>
+            <AlertState>
+                <Router>
+                    <div className='App'>
+                        <NavBar />
+                        <div className='container'>
+                            <Alert />
+                            <Switch>
+                                <Route
+                                    exact
+                                    path='/'
+                                    render={(props) => (
+                                        <Fragment>
+                                            <Search />
+                                            <Users />
+                                        </Fragment>
+                                    )}
+                                />
+                                <Route exact path='/about' component={About} />
+                                <Route
+                                    exact
+                                    path='/user/:login'
+                                    component={User}
+                                />
+                            </Switch>
+                        </div>
                     </div>
-                </div>
-            </Router>
+                </Router>
+            </AlertState>
         </GitHubState>
     );
 };
