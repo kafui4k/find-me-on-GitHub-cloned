@@ -9,7 +9,7 @@ import {Alert} from './components/layouts/Alert';
 import {About} from './components/pages/About';
 import User from './components/users/User';
 
-import GitHubState from './context/github/githubState';
+import GitHubState from './context/github/GitHubState';
 
 const App = () => {
     const [users, setUsers] = useState([]);
@@ -17,18 +17,6 @@ const App = () => {
     const [repos, setRepos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [alert, setALert] = useState(null);
-
-    // search GitHub users...
-    const searchUsers = async (text) => {
-        setLoading(true);
-
-        const res = await axios.get(
-            `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`,
-        );
-
-        setUsers(res.data.items);
-        setLoading(false);
-    };
 
     // get a single github usrs
     const getUser = async (username) => {
@@ -80,7 +68,6 @@ const App = () => {
                                 render={(props) => (
                                     <Fragment>
                                         <Search
-                                            searchUsers={searchUsers}
                                             clearUsers={clearUsers}
                                             showClear={
                                                 users.length > 0 ? true : false
